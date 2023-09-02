@@ -1,0 +1,52 @@
+[core]
+    editor = vim
+    autocrlf = input
+    excludesfile = /home/sean/.gitignore
+    hooksPath = /home/sean/.githooks
+[alias]
+    au = shortlog -s -n
+    br = branch
+    ci = commit
+    co = checkout
+    dc = diff --cached
+    di = diff
+    dt = difftool
+    dtc = difftool --cached
+    last = 'log -1 HEAD'
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    pu = pull
+    rv = remote -v
+    st = status
+    ta = log --date-order --graph --tags --simplify-by-decoration --pretty=format:'%ai %h %d'
+[color]
+    diff = auto
+    interactive = auto
+    status = auto
+    branch = auto
+[diff]
+    tool = vimdiff
+    renameLimit = 2712
+[difftool]
+    prompt = false
+[grep]
+    extendedRegexp = true
+[gpg]
+    program = gpg2
+[pull]
+    rebase = true
+[init]
+    defaultBranch = main
+[log]
+    mailmap = true
+[mailmap]
+    file = /home/sean/.mailmap
+[user]
+    name = sean
+    email = sean@torandu.com
+[filter "lfs"]
+    process = git-lfs filter-process --skip
+    required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge --skip -- %f
+[fetch]
+    prune = true

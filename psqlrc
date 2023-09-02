@@ -1,0 +1,7 @@
+# .psqlrc
+\setenv PAGER 'less'
+\setenv LESS '-FRXi'
+\pset pager always
+\timing
+\set PROMPT1 '%n@%m [%/]=> '
+\set PROMPT2 '%n@%m [%/]+> '

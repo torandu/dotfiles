@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -eu -o pipefail
+
+thisdir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+for f in *; do
+    [[ $f == $(basename $0) ]] && continue # skip this file
+    dotfile=$HOME/.${f}
+    if [[ -h $dotfile ]]; then # file is a symlink
+        rm $dotfile
+    elif [[ -e $dotfile ]]; then
+        mv --backup=numbered $dotfile{,.bak}
+    fi
+    ln -s $thisdir/$f $dotfile
+done

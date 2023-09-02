@@ -1,0 +1,158 @@
+" vimrc
+"
+let data_dir = '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin()
+    Plug 'ConradIrwin/vim-bracketed-paste'
+    Plug 'Vimjas/vim-python-pep8-indent'
+    Plug 'cespare/vim-toml'
+    Plug 'dense-analysis/ale'
+    Plug 'fatih/vim-go'
+    Plug 'git@github.com:torandu/vim-csv-syntax'
+    Plug 'godlygeek/tabular'
+    Plug 'google/vim-searchindex'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-surround'
+    Plug 'vim-test/vim-test'
+call plug#end()
+
+set nocompatible
+imap jj <ESC>
+
+filetype plugin indent on
+syntax on
+
+set hidden
+set noswapfile
+
+set backspace=start,eol,indent
+set ts=4 sts=4 sw=4 et
+set cursorline
+set scrolloff=3
+set bg=dark
+
+let mapleader = ','
+set pastetoggle=<Leader>v
+
+set hlsearch
+nmap <silent> <BS> :nohlsearch<CR>
+
+set ignorecase
+set smartcase
+
+set autoindent
+set smartindent
+
+" completion mode
+set wildmode=longest,list,full
+
+set laststatus=2
+set statusline=%f\ %l/%L\ %p%%\ %{&paste?'[PASTE]':''}
+
+set nu
+nnoremap <silent><Leader>n :set nonu!<CR>
+
+" fix diff colours
+if &diff
+    hi DiffChange ctermfg=white ctermbg=blue
+    hi DiffText   ctermfg=black ctermbg=yellow
+    hi DiffAdd    ctermfg=white ctermbg=green
+    hi DiffDelete ctermfg=white ctermbg=red
+    syntax off
+endif
+
+" edit vimrc file
+map <Leader>V :edit $MYVIMRC<CR>
+
+" insert template
+iab hb #!/usr/bin/env bash<CR>set -eu -o pipefail<CR>
+iab hp #!/usr/bin/env python3<CR><CR>import subprocess<CR>
+
+iab ii -
+
+" insert current filename
+inoremap <Leader>fn <C-R>=expand("%:t")<CR>
+
+" insert various date formats
+iab <expr> dtt strftime("%a %d %b %Y")
+iab <expr> dtn strftime("%c")
+
+augroup closeOnQuit
+    autocmd!
+    autocmd QuitPre * exe "lclose|cclose"
+augroup END
+
+augroup editVimrc
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END
+
+augroup openFileToLastLocation
+    autocmd!
+    autocmd BufReadPost *
+      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+      \ |   exe "normal! g`\""
+      \ | endif
+augroup END
+
+augroup removeTrailingWhitespace
+    autocmd!
+    autocmd BufWritePre * %s/\s\+$//e
+augroup END
+
+function! EditJournal()
+    let g:journal = $HOME . '/notes/journal'
+    if !isdirectory(g:journal)
+        call mkdir(g:journal, 'p')
+    endif
+    let fname = g:journal . '/' . strftime('%m%d_%a')
+    edit `=fname`
+    if empty(filereadable(fname))
+        0 put='# ' . strftime('%a %e %b %Y')
+        1 put=''
+        2 put='# TODAY'
+        3 put=''
+        4 put='# DONE'
+        5 put=''
+        6 put='# NOTES'
+        exec 'normal! 4G'
+        exec 'startinsert!'
+        " write
+        " edit %
+    endif
+    redraw!
+endfunction
+command! Ej call EditJournal()
+
+" Asynchronous Lint Engine
+" https://github.com/dense-analysis/ale
+let g:ale_linters_explicit = 1 " only run linters named in ale_linters
+let g:ale_linters = {'python': ['flake8']}
+let g:ale_fixers = {'python': ['black', 'isort']}
+let g:ale_fix_on_save = 1
+let g:ale_open_list = 1
+let g:ale_set_highlights = 0
+let g:ale_lint_delay = 500
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+noremap <F8> :ALEToggleBuffer<CR>
+noremap <F9> :ALEFix<CR>
+
+" fzf is a general-purpose command-line fuzzy finder.
+" https://github.com/junegunn/fzf.vim
+set runtimepath+=/usr/local/opt/fzf
+command! Buffers call fzf#run(fzf#wrap({'source': map(range(1, bufnr('$')), 'bufname(v:val)')}))
+command! -bang Buffers call fzf#run(fzf#wrap({'source': map(range(1, bufnr('$')), 'bufname(v:val)')}, <bang>0))
+command! -bang Buffers call fzf#run(fzf#wrap('buffers', {'source': map(range(1, bufnr('$')), 'bufname(v:val)')}, <bang>0))
+nnoremap <silent> <Leader>t :Files<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>h :Help<CR>
+nnoremap <silent> <Leader>H :helpclose<CR>
