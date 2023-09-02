@@ -13,6 +13,7 @@
     dt = difftool
     dtc = difftool --cached
     last = 'log -1 HEAD'
+    lg = log --graph -10 --format='%C(yellow)%h%Creset  %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     pu = pull
     rv = remote -v
