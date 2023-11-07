@@ -11,3 +11,6 @@ nnoremap <buffer> <F12> :exec '! clear; python' shellescape(@%, 1)<cr>
 
 iabbrev hp #!/usr/bin/env python3<CR>
 iabbrev ifm if __name__ == '__main__':<CR>
+
+let b:dispatch = 'pytest'
+map <Leader>d :Dispatch<CR>
