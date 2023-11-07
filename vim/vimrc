@@ -8,20 +8,19 @@ endif
 
 call plug#begin()
     Plug 'ConradIrwin/vim-bracketed-paste'
-    Plug 'Vimjas/vim-python-pep8-indent'
     Plug 'cespare/vim-toml'
     Plug 'dense-analysis/ale'
-    Plug 'fatih/vim-go'
     Plug 'git@github.com:torandu/vim-csv-syntax'
     Plug 'godlygeek/tabular'
     Plug 'google/vim-searchindex'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
     Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-dispatch'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
-    Plug 'vim-test/vim-test'
 call plug#end()
 
 set nocompatible
@@ -77,12 +76,13 @@ iab hb #!/usr/bin/env bash<CR>set -eu -o pipefail<CR>
 iab hp #!/usr/bin/env python3<CR><CR>import subprocess<CR>
 
 iab ii -
+iab ib [ ]
 
 " insert current filename
 inoremap <Leader>fn <C-R>=expand("%:t")<CR>
 
 " insert various date formats
-iab <expr> dtt strftime("%a %d %b %Y")
+iab <expr> dtd strftime("%a %d %b %Y")
 iab <expr> dtn strftime("%c")
 
 augroup closeOnQuit
@@ -135,8 +135,9 @@ command! Ej call EditJournal()
 " Asynchronous Lint Engine
 " https://github.com/dense-analysis/ale
 let g:ale_linters_explicit = 1 " only run linters named in ale_linters
-let g:ale_linters = {'python': ['flake8']}
-let g:ale_fixers = {'python': ['black', 'isort']}
+" https://github.com/dense-analysis/ale/blob/master/supported-tools.md
+let g:ale_linters = {'python': ['ruff']}
+let g:ale_fixers = {'python': ['ruff', 'black']}
 let g:ale_fix_on_save = 1
 let g:ale_open_list = 1
 let g:ale_set_highlights = 0
