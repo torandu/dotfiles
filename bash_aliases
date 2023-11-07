@@ -10,6 +10,7 @@ export EDITOR=vim
 export LESS=-FRXM
 export MANPAGER=less
 export PAGER=less
+export MINIKUBE_IN_STYLE=false
 
 if type __git_ps1 &>/dev/null; then
     GIT_PS1_SHOWDIRTYSTATE=1
@@ -32,9 +33,12 @@ if command -v minikube &>/dev/null; then
     source <(minikube completion bash)
 fi
 
+if command -v kubectl &>/dev/null; then
+    source <(kubectl completion bash)
+fi
+
 export PYTHONSTARTUP=~/.pythonstartup
 alias python3='/usr/bin/python3.11'
-alias python='/usr/bin/python3.11'
 alias ptpython='ptpython --dark-bg'
 
 unalias ls
@@ -45,10 +49,13 @@ alias mv='mv -i'
 
 alias ...='cd ../../'
 alias ..='cd ..'
-alias cdc='cd ~/code'
+alias cda='cd ~/archive'
 alias cdd='cd ~/Downloads'
 alias cdn='cd ~/notes'
+alias cdp='cd ~/proj'
+alias cds='cd ~/src'
 alias cdt='cd ~/tmp'
+alias cdv='cd ~/Videos'
 
 alias info='info --vi-keys'
 
@@ -70,6 +77,27 @@ _mkenvrc() {
 cat << EOF > .envrc
 source .venv/bin/activate
 unset PS1
+EOF
+}
+
+_devreqs() {
+cat << EOF > requirements_dev.txt
+black
+flake8
+flake8-black
+flake8-isort
+isort
+pep8-naming
+pytest
+pytest-cov
+EOF
+cat << EOF > .flake8
+[flake8]
+max-complexity = 10
+exclude = .venv
+# options to support black
+max-line-length = 88
+extend-ignore = E203
 EOF
 }
 
@@ -114,10 +142,16 @@ startmux() {
             new -s "$session_name" -n notes \; \
             set -g status-style "bg=$bgcolor" \; \
             set -ag status-style "fg=$fgcolor" \; \
-            send-keys "cd ~/notes" C-m \; \
-            neww -n code \; \
-            send-keys "cd ~/code" C-m \; \
+            send-keys "cd ~/notes; vim -c Ej" C-m \; \
+            neww -n proj \; \
+            send-keys "cd ~/proj; ls -1" C-m \; \
+            neww -n repl \; \
+            send-keys "cd ~/proj/python/repl; source .venv/bin/activate; ptpython" C-m \; \
+            neww -n pydocs \; \
+            send-keys "cd ~/python-3.12.0-docs-html; python3 -m http.server" C-m \; \
+            neww -n youtube-dl \; \
+            send-keys "cd ~/youtube-dl; source .venv/bin/activate" C-m \; \
             neww \; \
-            select-window -t code
+            select-window -t proj
 }
-alias sm='startmux'
+alias sm=startmux
