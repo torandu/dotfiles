@@ -80,27 +80,6 @@ unset PS1
 EOF
 }
 
-_devreqs() {
-cat << EOF > requirements_dev.txt
-black
-flake8
-flake8-black
-flake8-isort
-isort
-pep8-naming
-pytest
-pytest-cov
-EOF
-cat << EOF > .flake8
-[flake8]
-max-complexity = 10
-exclude = .venv
-# options to support black
-max-line-length = 88
-extend-ignore = E203
-EOF
-}
-
 mkvirtualenv() {
     if [[ -d .venv ]]; then
         read -p "Replace existing virtual environment? " -n 1 -r; echo
