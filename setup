@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -eu -o pipefail
+
+thisdir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+for f in *; do
+    if [[ $f == $(basename "$0") ]] || [[ $f == "README.md" ]]; then
+        continue # skip file
+    fi
+    dotfile=$HOME/.${f}
+    if [[ -h $dotfile ]]; then # file is a symlink
+        rm "$dotfile"
+    elif [[ -e $dotfile ]]; then
+        count=0
+        while [[ -e $dotfile.$count ]]; do
+            (( count+=1 ))
+        done
+        mv "$dotfile"{,.bak.$count}
+    fi
+    ln -s "$thisdir"/"$f" "$dotfile"
+done

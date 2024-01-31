@@ -1,0 +1,30 @@
+# .gitconfig
+
+[core]
+    autocrlf = input
+    editor = vim
+    excludesFile = ~/.gitignore
+    hooksPath = ~/.githooks
+[alias]
+    au = shortlog -s -n
+    ci = commit
+    co = checkout
+    dc = diff --cached
+    di = diff
+    ll = log --graph --decorate --pretty=oneline --abbrev-commit
+    lp = log --patch
+    pu = pull
+    rv = remote -v
+    st = status
+[user]
+    name = sean
+    email = sean@torandu.com
+[fetch]
+    prune = true
+    pruneTags = True
+[init]
+    defaultBranch = main
+[mailmap]
+    file = ~/.mailmap
+[includeIf "gitdir:~/code/work/"]
+    path = ~/.gitconfig.work

@@ -1,0 +1,7 @@
+*.lock
+*.swo
+*.swp
+*.~lock*
+*~
+.netrwhist
+tags
