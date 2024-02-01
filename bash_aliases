@@ -66,14 +66,24 @@ alias pv='which python; python --version'
 
 fixssh() { eval "$(tmux show-env -s | grep '^SSH_')" ; }
 
+_mkvirtualenv(){
+    python3 -m venv .venv
+cat << EOF > .envrc
+source .venv/bin/activate
+unset PS1
+echo "using $(python --version) ($(which python))"
+EOF
+}
+
 mkvirtualenv() {
     if [[ -d .venv ]]; then
         read -p "Replace existing virtual environment? " -n 1 -r; echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            rm -rf .venv
-            python3 -m venv .venv
-            echo -e "source .venv/bin/activate\nunset PS1" > .envrc
+            rm -rf .venv .envrc
+            _mkvirtualenv
         fi
+    else
+        _mkvirtualenv
     fi
 }
 
