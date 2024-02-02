@@ -50,7 +50,7 @@ alias ..='cd ..'
 alias cdc='cd ~/code'
 alias cdn='cd ~/notes'
 alias cdt='cd ~/tmp'
-alias cdw='cd ~/wrk'
+alias cdw='cd ~/work'
 
 alias info='info --vi-keys'
 
