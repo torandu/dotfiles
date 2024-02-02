@@ -96,6 +96,10 @@ if command -v direnv &>/dev/null; then
     eval "$(direnv hook bash)"
 fi
 
+if command -v fdfind &> /dev/null; then
+    alias fd='fdfind'
+fi
+
 startmux() {
     session_name=$(hostname -s)
     bgcolor="green"
