@@ -48,9 +48,11 @@ alias mv='mv -i'
 alias ...='cd ../../'
 alias ..='cd ..'
 alias cdc='cd ~/code'
+alias cdd='cd ~/code/dotfiles'
 alias cdn='cd ~/notes'
 alias cdt='cd ~/tmp'
 alias cdw='cd ~/work'
+alias cdv='cd ~/code/vimconfig'
 
 alias info='info --vi-keys'
 
@@ -117,3 +119,4 @@ startmux() {
             neww \; \
             select-window -t notes
 }
+alias sm='startmux'
