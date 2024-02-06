@@ -16,9 +16,9 @@ if type __git_ps1 &>/dev/null; then
     GIT_PS1_SHOWDIRTYSTATE=1
     GIT_PS1_SHOWSTASHSTATE=1
     GIT_PS1_SHOWUNTRACKEDFILES=1
-    PS1='\u@\h:\w(\j)$(__git_ps1 " (%s)")$ '
+    PS1='\w(\j)$(__git_ps1 " (%s)")$ '
 else
-    PS1='\u@\h:\w(\j)$ '
+    PS1='\w(\j)$ '
 fi
 
 if [[ -f /usr/local/bin/aws_completer ]]; then
