@@ -26,5 +26,5 @@
     defaultBranch = main
 [mailmap]
     file = ~/.mailmap
-[includeIf "gitdir:~/code/work/"]
+[includeIf "hasconfig:remote.*.url:git@bitbucket.org:arcapix/**"]
     path = ~/.gitconfig.work
