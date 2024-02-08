@@ -103,9 +103,10 @@ if command -v fdfind &> /dev/null; then
 fi
 
 startmux() {
-    session_name=$(hostname -s)
+    session_name="localhost"
     bgcolor="green"
     if [[ -n "$SSH_CONNECTION" ]]; then
+        session_name=$(hostname -s)
         bgcolor="cyan"
     fi
     tmux -2 att -t "$session_name" ||
