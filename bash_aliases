@@ -29,6 +29,10 @@ if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
     . /usr/share/doc/fzf/examples/key-bindings.bash
 fi
 
+if [[ -f ~/google-cloud-sdk/google-cloud-sdk/completion.bash.inc ]]; then
+    . ~/google-cloud-sdk/google-cloud-sdk/completion.bash.inc
+fi
+
 if command -v minikube &>/dev/null; then
     source <(minikube completion bash)
 fi
@@ -47,9 +51,11 @@ alias mv='mv -i'
 
 alias ...='cd ../../'
 alias ..='cd ..'
+alias cda='cd ~/code/arcapix'
 alias cdc='cd ~/code'
 alias cdd='cd ~/code/dotfiles'
 alias cdn='cd ~/notes'
+alias cds='cd ~/code/$USER'
 alias cdt='cd ~/tmp'
 alias cdw='cd ~/work'
 alias cdv='cd ~/code/vimconfig'
@@ -66,6 +72,7 @@ alias ev='vim ~/.vim/vimrc'
 alias path='env | grep PATH | tr ":" "\n"'
 alias ptpython='ptpython --dark-bg'
 alias pv='which python; python --version'
+alias tokei='tokei --sort code'
 
 fixssh() { eval "$(tmux show-env -s | grep '^SSH_')" ; }
 
@@ -116,7 +123,7 @@ startmux() {
             set -ag status-style "fg=black" \; \
             send-keys "cd ~/notes" C-m \; \
             neww -n code \; \
-            send-keys "cd ~/code" C-m \; \
+            send-keys "cd ~/code/arcapix" C-m \; \
             neww \; \
             select-window -t notes
 }
